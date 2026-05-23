@@ -1,0 +1,5 @@
+/linux-*/
+/modules-*/
+/output/
+/source_files/*/*.o
+/source_files/*/*.cmd
