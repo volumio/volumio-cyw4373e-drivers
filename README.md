@@ -8,11 +8,11 @@ Run the scripts from the project root directory:
 
 ```bash
 # Download and build
-$ build_scripts/download_build.sh
+$ build_script/download_build.sh
 ```
 
 ```bash
 # Build using current sources (no download)
-$ build_scripts/re-build.sh
+$ build_script/re-build.sh
 ```
 
