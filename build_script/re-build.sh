@@ -5,11 +5,20 @@ LOGFILE="/tmp/cyw4373e.log"
 
 KERNEL_VERSION="6.12.75"
 
+# Specify the CYW4373E source directory (within source_files) to match
+# the supplied KERNEL_VERSION. Please update this table whenever
+# a new kernel appears
+declare -rA CYW4373E_SOURCES=(
+  ["6.12.75"]="6.12.y"
+)
+
 MODULES_DEST_NAME="modules-rpi-${KERNEL_VERSION}-updates"
 
-#declare -ra TARGETS=("rpi0-32bit" "rpi2-32bit" "rpi34-32bit" "rpi345-64bit")
-declare -ra TARGETS=("rpi0-32bit")
+# Target names are not related to the Linux kernel.
+# They are user-defined and can be changed as will.
+declare -ra TARGETS=("rpi0-32bit" "rpi2-32bit" "rpi34-32bit" "rpi345-64bit")
 
+# Specify the architecture for each target
 declare -rA KERNEL_ARCHS=(
   ["rpi0-32bit"]="arm"
   ["rpi2-32bit"]="arm"
@@ -17,13 +26,7 @@ declare -rA KERNEL_ARCHS=(
   ["rpi345-64bit"]="arm64"
 )
 
-declare -rA KERNEL_LABELS=(
-  ["rpi0-32bit"]="+"
-  ["rpi2-32bit"]="v7+"
-  ["rpi34-32bit"]="v7l+"
-  ["rpi345-64bit"]="v8+"
-)
-
+# Specify the compiler to use for each target
 declare -rA CROSS_COMPILERS=(
   ["rpi0-32bit"]="arm-linux-gnueabihf-"
   ["rpi2-32bit"]="arm-linux-gnueabihf-"
@@ -31,6 +34,7 @@ declare -rA CROSS_COMPILERS=(
   ["rpi345-64bit"]="aarch64-linux-gnu-"
 )
 
+# Specify the kernel defconfig to use for each target
 declare -rA DEFCONFIGS=(
   ["rpi0-32bit"]="bcmrpi_defconfig"
   ["rpi2-32bit"]="bcm2709_defconfig"
@@ -39,6 +43,11 @@ declare -rA DEFCONFIGS=(
 )
 
 CWD=$PWD
+
+# INSTALL_MOD_PATH is used by kernel Makefile as the place
+# where to "install" the modules when modules_instal makefile
+# target is invoked. This let's us "install" the modules in
+# a custom path instead of the system /lib path
 export INSTALL_MOD_PATH="${CWD}/${MODULES_DEST_NAME}"
 
 echo "Writing logfile to ${LOGFILE}"
@@ -55,6 +64,7 @@ do
 
   cd $CWD
 
+  # These variables are exported because they are used by the kernel Makefile
   export ARCH=${KERNEL_ARCHS[$TARGET]}
   export CROSS_COMPILE=${CROSS_COMPILERS[$TARGET]}
   export LOCALVERSION="+"
@@ -62,9 +72,10 @@ do
   DEFCONFIG=${DEFCONFIGS[$TARGET]}
 
   DIR_KERNEL=${CWD}/linux-${KERNEL_VERSION}
-  DIR_CYW4373E=${CWD}/source_files/6.12.y
+  [[ ! -d ${DIR_KERNEL} ]] && echo "missing kernel sources from ${DIR_KERNEL}, download kernel first" && exit 1
 
-  [[ ! -d ${DIR_KERNEL} ]] && echo "missing kernel sources from ${DIR_KERNEL}" && exit 1
+  DIR_CYW4373E=${CWD}/source_files/${CYW4373E_SOURCES[$KERNEL_VERSION]}
+  [[ ! -d ${DIR_CYW4373E} ]] && echo "missing cyw4373e source path ${DIR_CYW4373E}" && exit 1
 
   echo ""
   echo "Target: $TARGET (arch: $ARCH, compiler: $CROSS_COMPILE, defconfig: $DEFCONFIG)"
