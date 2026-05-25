@@ -1,6 +1,5 @@
 /linux-*/
 /modules-*/
-/output/
 /source_files/**/.config*
 /source_files/**/.kernel_config_md5
 /source_files/**/Kconfig.kernel

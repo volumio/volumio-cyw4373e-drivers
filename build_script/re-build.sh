@@ -17,7 +17,8 @@ MODULES_DEST_NAME="modules-rpi-${KERNEL_VERSION}-updates"
 
 # Target names are not related to the Linux kernel.
 # They are user-defined and can be changed as will.
-declare -ra TARGETS=("rpi0-32bit" "rpi2-32bit" "rpi34-32bit" "rpi345-64bit")
+#declare -ra TARGETS=("rpi0-32bit" "rpi2-32bit" "rpi34-32bit" "rpi345-64bit")
+declare -ra TARGETS=("rpi34-32bit" "rpi345-64bit")
 
 # Specify the architecture for each target
 declare -rA KERNEL_ARCHS=(
