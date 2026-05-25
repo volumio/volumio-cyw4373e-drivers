@@ -10,6 +10,7 @@ KERNEL_VERSION="6.12.75"
 # a new kernel appears
 declare -rA CYW4373E_SOURCES=(
   ["6.12.75"]="6.12.y"
+  ["6.12.74"]="6.12.y"
 )
 
 MODULES_DEST_NAME="modules-rpi-${KERNEL_VERSION}-updates"
@@ -112,6 +113,10 @@ cd ${CWD}
 
 # Remove unneeded depmod modules.* files, just keep the "updates" directories
 rm -f ${INSTALL_MOD_PATH}/lib/modules/*/modules.*
+
+# Copy the firmware files along the kernel modules
+mkdir -p ${INSTALL_MOD_PATH}/lib/firmware/brcm
+cp -a source_files/firmware/* ${INSTALL_MOD_PATH}/lib/firmware/brcm
 
 PATH_MODULES_DEST="output/${MODULES_DEST_NAME}"
 echo "Creating modules tarball ${PATH_MODULES_DEST}.tar.gz"

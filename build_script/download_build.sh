@@ -6,6 +6,8 @@ case $KERNEL_VERSION in
     "6.12.75")
       KERNEL_COMMIT="98655d3ccedba33aeadd0e550229f1496c5bf6f9"
       ;;
+    "6.12.74")
+      KERNEL_COMMIT="7a35bddc777d8992bdfe42f8e3d043582df2f5f8"
 esac
 
 echo "--- Download kernel source for version ${KERNEL_VERSION} ---"
